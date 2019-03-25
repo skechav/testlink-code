@@ -286,7 +286,8 @@ function renderReqForPrinting(&$db,$node, &$options, $tocPrefix, $reqLevel, $tpr
       if($fitem['is_image']) {
         $output .= "<li>" . $safeFileName . "</li>";
         
-        $pathname = $repoDir . $item['file_path'];
+        //$pathname = $repoDir . $item['file_path'];
+        $pathname = $st->repoDir . $item['file_path'];
         list($iWidth, $iHeight, $iT, $iA) = getimagesize($pathname);
         $iDim = ' width=' . $iWidth . ' height=' . $iHeight;
         $output .= '<li>' . '<img ' . $iDim . 
@@ -1696,7 +1697,8 @@ function renderTestSuiteNodeForPrinting(&$db,&$node,$env,&$options,$context,$toc
                   $sec . '&id=' . $item['id'];
 
         if($item['is_image'])  {
-          $pathname = $repoDir . $item['file_path'];
+          //$pathname = $repoDir . $item['file_path'];
+          $pathname = $st->repoDir . $item['file_path'];
           list($iWidth, $iHeight, $iT, $iA) = getimagesize($pathname);
           $iDim = ' width=' . $iWidth . ' height=' . $iHeight;
           $code .= '<li>' . '<img ' . $iDim . 
