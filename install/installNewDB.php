@@ -88,7 +88,7 @@ if (!$validator->isValid($dbHost)) {
   die();
 }
 
-$san = '/[^A-Za-z0-9\-]/';
+$san = '/[^A-Za-z0-9_\-]/'; // allow db name and admin name to use underscore 
 $db_name = trim($_SESSION['databasename']);
 $db_name = preg_replace($san,'',$db_name);
 
