@@ -133,12 +133,21 @@ if($do_display) {
 
   // Add Test Cases to Test plan - Right pane does not honor custom field filter
   // filter by test case execution type
-  $filters = array('keywords' => $args->keyword_id, 'testcases' => $testCaseSet, 
-                   'exec_type' => $args->executionType, 'importance' => $args->importance,
-                   'cfields' => $args->control_panel['filter_custom_fields'],
+  $filters = array('keywords' => $args->keyword_id, 
+                   'testcases' => $testCaseSet, 
+                   'exec_type' => $args->executionType, 
+                   'importance' => $args->importance,
                    'workflow_status' => $args->workflow_status,
-                   'tcase_name' => $args->control_panel['filter_testcase_name']);
+                   'cfields' => null, 'tcase_name' => null);
 
+  if( isset($args->control_panel['filter_custom_fields']) ) {
+    $filters['cfields'] = $args->control_panel['filter_custom_fields']; 
+  }
+
+  if( isset($args->control_panel['filter_testcase_name']) ) {
+    $filters['tcase_name'] = 
+      $args->control_panel['filter_testcase_name']; 
+  }
 
   $out = gen_spec_view($db,'testPlanLinking',$args->tproject_id,$args->object_id,$tsuite_data['name'],
                        $tplan_linked_tcversions,null,$filters,$opt);
@@ -254,7 +263,9 @@ if($do_display) {
 
 	// Choose enable/disable display of custom fields, analysing if this kind of custom fields
 	// exists on this test project.
-	$cfields=$tsuite_mgr->cfield_mgr->get_linked_cfields_at_testplan_design($args->tproject_id,1,'testcase');
+	$cfields = 
+    (array)$tsuite_mgr->cfield_mgr->get_linked_cfields_at_testplan_design($args->tproject_id,1,'testcase');
+
 	$opt = array('write_button_only_if_linked' => 0, 'add_custom_fields' => 0);
 	$opt['add_custom_fields'] = count($cfields) > 0 ? 1 : 0;
 
@@ -265,9 +276,7 @@ if($do_display) {
 	'cfields' => $args->control_panel['filter_custom_fields'],
 	'tcase_name' => $args->control_panel['filter_testcase_name']);
 	
-	if($args->item_level == 'reqcoverage')
-	{
-	
+	if($args->item_level == 'reqcoverage') {	
 	  $out = array();
 	  $out = gen_coverage_view($db,'testPlanLinking',$args->tproject_id,$args->object_id,$requirement_data_name,
  	  $tplan_linked_tcversions,null,$filters,$opt);
